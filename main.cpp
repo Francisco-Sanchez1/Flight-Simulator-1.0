@@ -87,7 +87,7 @@ double Plane::heading_converter(double hc){
     if(hc < 0){
         return (360 + (hc));
     }
-    else if(hc > 360){
+    else if(hc >= 360){
         return ((hc) - 360);
     }
     else{
@@ -173,12 +173,12 @@ int main(){
                 break;
             }
             case 'a':{//heading
-                double new_heading = new_heading + (p1.heading_controller(c));
+                double new_heading = p1.get_heading() + (p1.heading_controller(c));
                 p1.set_heading(p1.heading_converter(new_heading));
                 break;
             }
             case 'd':{
-                double new_heading = new_heading + (p1.heading_controller(c));
+                double new_heading = p1.get_heading() + (p1.heading_controller(c));
                 p1.set_heading(p1.heading_converter(new_heading));
                 break;
             }
