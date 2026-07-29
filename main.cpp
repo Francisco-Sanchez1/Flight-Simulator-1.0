@@ -22,9 +22,12 @@ class Plane{
         
         double get_heading();
         double set_heading(double h);
+        double heading_controller(char input);
+        double heading_converter(double hc);
 
         double get_altitude();
         double set_altitude(double a);
+        double altitude_controller(char input);
 
         Plane(double s, double h, double a) :speed{s}, heading{h}, altitude{a}{}
 
@@ -46,6 +49,16 @@ double Plane::set_altitude(double a){
     return altitude;
 
 }
+double Plane::altitude_controller(char i){
+    if (i == 'q' || i == 'Q'){
+        return 1;
+    }
+    else if (i == 'e' || 'E')
+        return -1;
+    else{
+        error("Not a valid input");
+    }
+}
 
 
 //Heading Methods
@@ -56,6 +69,30 @@ double Plane::get_heading(){
 double Plane::set_heading(double h){
     heading = h;
     return h;
+
+}
+double Plane::heading_controller(char i){
+    if (i == 'd' || i == 'D'){
+        return 1;
+    }
+    else if (i == 'a' || 'A')
+        return -1;
+    else{
+        error("Not a valid input");
+    }
+}
+
+double Plane::heading_converter(double hc){
+    
+    if(hc < 0){
+        return (360 + (hc));
+    }
+    else if(hc > 360){
+        return ((hc) - 360);
+    }
+    else{
+        return hc;
+    }
 
 }
 
@@ -85,9 +122,9 @@ double Plane::speed_controller(char i){
 int main(){
 // need to organize this into seperate functions
     char plane_start;
-    double speed;
-    double heading;
-    double altitude;
+    double speed = 0;
+    double heading = 0;
+    double altitude = 0;
 
 
     //Welcome message
@@ -115,16 +152,34 @@ int main(){
     for(char c; std::cin >> c;){
         switch (c)
         {
-            case 'w':{
-                double new_speed = 0;
-                new_speed = p1.get_speed() + (p1.speed_controller(c));
+            case 'w':{//speed
+                double new_speed = p1.get_speed() + (p1.speed_controller(c));
                 p1.set_speed(new_speed);
                 break;
             }
             case 's':{
-                double new_speed = 0;
-                new_speed = p1.get_speed() + (p1.speed_controller(c));
+                double new_speed = p1.get_speed() + (p1.speed_controller(c));
                 p1.set_speed(new_speed);
+                break;
+            }
+            case 'q':{//altitude
+                double new_altitude = p1.get_altitude() + (p1.altitude_controller(c));
+                p1.set_altitude(new_altitude);
+                break;
+            }
+            case 'e':{
+                double new_altitude = p1.get_altitude() + (p1.altitude_controller(c));
+                p1.set_altitude(new_altitude);
+                break;
+            }
+            case 'a':{//heading
+                double new_heading = new_heading + (p1.heading_controller(c));
+                p1.set_heading(p1.heading_converter(new_heading));
+                break;
+            }
+            case 'd':{
+                double new_heading = new_heading + (p1.heading_controller(c));
+                p1.set_heading(p1.heading_converter(new_heading));
                 break;
             }
             default:
@@ -133,6 +188,8 @@ int main(){
     }
 
     std::cout << "SPEED: " << p1.get_speed() << '\n';
+    std::cout << "ALTITUDE: " << p1.get_altitude() << '\n';
+    std::cout << "HEADING: " << p1.get_heading() << '\n';
 
     
     
