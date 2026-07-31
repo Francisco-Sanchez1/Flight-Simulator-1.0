@@ -42,7 +42,7 @@ class Plane{
 
 double Plane::get_altitude(){
     if (altitude <= 0){
-        std::cout << "Crash ";
+        error("Bro you crashed the $10B Plane");
     }
     return altitude;
 
@@ -62,7 +62,7 @@ double Plane::altitude_controller(char i){
     else if (i == 'e' || 'E')
         return -1;
     else{
-        error("Not a valid input");
+        return 0;
     }
 }
 
@@ -81,11 +81,14 @@ double Plane::heading_controller(char i){
     if (i == 'd' || i == 'D'){
         return 1;
     }
-    else if (i == 'a' || 'A')
+    else if (i == 'a' || 'A'){
         return -1;
-    else{
-        error("Not a valid input");
     }
+    else
+    {
+        return 0;
+    }
+    
 }
 
 double Plane::heading_converter(double hc){
@@ -120,25 +123,20 @@ double Plane::speed_controller(char i){
     else if (i == 's' || 'S')
         return -1;
     else{
-        error("Not a valid input");
+        return 0;
     }
 }
 
+void display_cockpit(Plane &p){
+    std::cout << "SPEED: " << p.get_speed() << '\n';
+    std::cout << "ALTITUDE: " << p.get_altitude() << '\n';
+    std::cout << "HEADING: " << p.get_heading() << '\n';
+}
 
-int main(){
-// need to organize this into seperate functions
-    char plane_start;
+void run_plane(){
     double speed = 0;
     double heading = 0;
     double altitude = 1;
-
-
-    //Welcome message
-    plane_start = start_plane();
-    
-    if (plane_start == 'N'){
-       return 0;
-    }
 
     std::cout << "Please enter Speed: " << '\n';
     std::cin >> speed;
@@ -189,13 +187,44 @@ int main(){
                 break;
             }
             default:
+                std::cout << c <<": is not a valid input" << '\n';
                 break;
         }
     }
 
-    std::cout << "SPEED: " << p1.get_speed() << '\n';
-    std::cout << "ALTITUDE: " << p1.get_altitude() << '\n';
-    std::cout << "HEADING: " << p1.get_heading() << '\n';
+    display_cockpit(p1);
+}
+
+void run_application(){
+    char plane_start = 'N';
+    
+    //Welcome message
+    plane_start = start_plane();
+
+    while(plane_start =='N'){
+        std::cout << "You have not started plane" << std::endl;
+        plane_start = start_plane();
+
+    }
+
+    run_plane();
+    
+
+    //run plane below with run_plane()
+    
+}
+
+
+int main(){
+// need to organize this into seperate functions
+    
+    try{
+    run_application();
+    }
+    catch (std::exception& e){
+        std::cerr <<  "Error: " << e.what() << '\n';
+        return 1;
+    }
 
     
     
