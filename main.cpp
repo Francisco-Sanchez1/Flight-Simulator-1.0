@@ -41,12 +41,18 @@ class Plane{
 //Altitude Methods
 
 double Plane::get_altitude(){
+    if (altitude <= 0){
+        std::cout << "Crash ";
+    }
     return altitude;
 
 }
 double Plane::set_altitude(double a){
     altitude = a;
+    
     return altitude;
+
+    
 
 }
 double Plane::altitude_controller(char i){
@@ -124,7 +130,7 @@ int main(){
     char plane_start;
     double speed = 0;
     double heading = 0;
-    double altitude = 0;
+    double altitude = 1;
 
 
     //Welcome message
