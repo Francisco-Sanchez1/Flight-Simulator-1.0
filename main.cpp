@@ -1,5 +1,6 @@
 #include <iostream>
 
+
 char start_plane(){
     char plane_start;
     std::cout << "Welcome to flight simulator 1.0" << '\n';
@@ -219,7 +220,7 @@ int main(){
 // need to organize this into seperate functions
     
     try{
-    run_application();
+        run_application();
     }
     catch (std::exception& e){
         std::cerr <<  "Error: " << e.what() << '\n';
