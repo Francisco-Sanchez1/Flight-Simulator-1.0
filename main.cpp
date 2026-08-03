@@ -1,4 +1,6 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
+
 
 
 char start_plane(){

@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/homebrew/opt/sfml/include"
+            ],
+            "defines": [],
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "macos-clang-arm64"
+        }
+    ],
+    "version": 4
+}
