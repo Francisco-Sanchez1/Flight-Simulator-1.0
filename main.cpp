@@ -137,7 +137,7 @@ void display_cockpit(Plane &p){
 
 void external_window() {
     {
-    sf::RenderWindow window(sf::VideoMode({400, 400}), "Cockpit Simulator 1.0");
+    sf::RenderWindow window(sf::VideoMode({400, 400}), "Flight Simulator 1.0");
     
     
     sf::Font font;
@@ -186,48 +186,48 @@ void external_window() {
                 if(KeyPressed->scancode == sf::Keyboard::Scancode::W){ //speed
                     double new_speed = p1.get_speed() + (p1.speed_controller('W'));
                     p1.set_speed(new_speed);
-                    std::cout << "W was pressed Speed is: " << p1.get_speed() << std::endl;
-                    std::string speed_value = "Speed: " + std::to_string(p1.get_speed()); 
+                    std::cout << "W was pressed Speed is: " << p1.get_speed() << " Kt" << std::endl;
+                    std::string speed_value = "Speed: " + std::to_string(p1.get_speed()) + " Kt"; 
                     speed_text.setString(speed_value);
                     
                 }
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::S){//Speed
                     double new_speed = p1.get_speed() + (p1.speed_controller('S'));
                     p1.set_speed(new_speed);
-                    std::cout << "S was pressed Speed is: " << p1.get_speed() << std::endl;
-                    std::string speed_final_output = "Speed: " + std::to_string(p1.get_speed()); 
+                    std::cout << "S was pressed Speed is: " << p1.get_speed() << " Kt" << std::endl;
+                    std::string speed_final_output = "Speed: " + std::to_string(p1.get_speed()) + " Kt"; 
                     speed_text.setString(speed_final_output);
                     
                 }
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::Q){//Altitude
                     double new_altitude = p1.get_altitude() + (p1.altitude_controller('Q'));
                     p1.set_altitude(new_altitude);
-                    std::cout << "Q was pressed Speed is: " << p1.get_altitude() << std::endl;
-                    std::string altitude_final_output = "Altitude: " + std::to_string(p1.get_altitude()); 
+                    std::cout << "Q was pressed Speed is: " << p1.get_altitude() << " Ft" << std::endl;
+                    std::string altitude_final_output = "Altitude: " + std::to_string(p1.get_altitude()) + " Ft"; 
                     altitude_text.setString(altitude_final_output);
                     
                 }
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::E){//Altitude
                     double new_altitude = p1.get_altitude() + (p1.altitude_controller('E'));
                     p1.set_altitude(new_altitude);
-                    std::cout << "E was pressed Speed is: " << p1.get_altitude() << std::endl;
-                    std::string altitude_final_output = "Altitude: " + std::to_string(p1.get_altitude()); 
+                    std::cout << "E was pressed Speed is: " << p1.get_altitude() << " Ft" << std::endl;
+                    std::string altitude_final_output = "Altitude: " + std::to_string(p1.get_altitude()) + " Ft"; 
                     altitude_text.setString(altitude_final_output);
                     
                 }
-                else if(KeyPressed->scancode == sf::Keyboard::Scancode::A){//Altitude
+                else if(KeyPressed->scancode == sf::Keyboard::Scancode::A){//Heading
                     double new_heading = p1.get_heading() + (p1.heading_controller('A'));
                     p1.set_heading(p1.heading_converter(new_heading));
-                    std::cout << "A was pressed Speed is: " << p1.get_heading() << std::endl;
-                    std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()); 
+                    std::cout << "A was pressed Speed is: " << p1.get_heading() << "Degrees" << std::endl;
+                    std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
                     
                 }
-                else if(KeyPressed->scancode == sf::Keyboard::Scancode::D){//Altitude
+                else if(KeyPressed->scancode == sf::Keyboard::Scancode::D){//Heading
                     double new_heading = p1.get_heading() + (p1.heading_controller('D'));
                     p1.set_heading(p1.heading_converter(new_heading));
-                    std::cout << "D was pressed Speed is: " << p1.get_heading() << std::endl;
-                    std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()); 
+                    std::cout << "D was pressed Speed is: " << p1.get_heading() << " Degrees" << std::endl;
+                    std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
                     
                 }
