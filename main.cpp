@@ -3,7 +3,7 @@
 
 
 
-char start_plane(){
+/*char start_plane(){
     char plane_start;
     std::cout << "Welcome to flight simulator 1.0" << '\n';
     std::cout << "Start up plane? (Y/N)" << '\n';
@@ -12,10 +12,7 @@ char start_plane(){
     return plane_start;
 
 }
-
-void error(std::string s){
-    throw std::runtime_error{s};
-}
+*/
 
 class Plane{
     public:
@@ -41,6 +38,9 @@ class Plane{
         double altitude;
 };
 
+void error(std::string s){
+    throw std::runtime_error{s};
+}
 //Altitude Methods
 
 double Plane::get_altitude(){
@@ -107,7 +107,6 @@ double Plane::heading_converter(double hc){
 }
 
 //Speed Methods
-
 double Plane::get_speed(){
     return speed;
 }
@@ -128,16 +127,16 @@ double Plane::speed_controller(char i){
     }
 }
 
-void display_cockpit(Plane &p){
+/*void display_cockpit(Plane &p){
     std::cout << "SPEED: " << p.get_speed() << '\n';
     std::cout << "ALTITUDE: " << p.get_altitude() << '\n';
     std::cout << "HEADING: " << p.get_heading() << '\n';
-}
+}*/
 
 
-void external_window() {
+void run_plane() {
     {
-    sf::RenderWindow window(sf::VideoMode({400, 400}), "Flight Simulator 1.0");
+    sf::RenderWindow window(sf::VideoMode({500, 500}), "Flight Simulator 1.0");
     
     
     sf::Font font;
@@ -145,11 +144,10 @@ void external_window() {
         std::cerr << "Failed to load font \n";
     }
 
-
     //Speed text
     sf::Text speed_text(font);
     speed_text.setString("Speed: ");
-    speed_text.setCharacterSize(30);
+    speed_text.setCharacterSize(20);
     speed_text.setStyle(sf::Text::Bold);
     speed_text.setFillColor(sf::Color::Red);
     speed_text.setPosition({10.f,0});
@@ -157,7 +155,7 @@ void external_window() {
     //Altitude text
     sf::Text altitude_text(font);
     altitude_text.setString("Altitude: ");
-    altitude_text.setCharacterSize(30);
+    altitude_text.setCharacterSize(20);
     altitude_text.setStyle(sf::Text::Bold);
     altitude_text.setFillColor(sf::Color::Blue);
     altitude_text.setPosition({10.f,50.f});
@@ -166,14 +164,34 @@ void external_window() {
     //Heading text
     sf::Text heading_text(font);
     heading_text.setString("Heading: ");
-    heading_text.setCharacterSize(30);
+    heading_text.setCharacterSize(20);
     heading_text.setStyle(sf::Text::Bold);
     heading_text.setFillColor(sf::Color::White);
     heading_text.setPosition({10.f,100.f});
 
+    //vertex array: screen line in middle 
+    sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+    line[0].position = sf::Vector2f(0.f, 250.f);
+    line[1].position = sf::Vector2f(500.f, 250.f);
+
+    //vertex array: screen line in middle 
+    sf::VertexArray line_divider(sf::PrimitiveType::Lines, 2);
+    line_divider[0].position = sf::Vector2f(250.f, 250.f);
+    line_divider[1].position = sf::Vector2f(250.f, 500.f);
+
+    //Spawn in plane sprite
+    sf::Texture plane_texture("/Users/fs/Desktop/Programs/Flight-Simulator-1.0/assests/plane.png");
+   
+    sf::Sprite plane_sprite(plane_texture);
+
+    auto plane_size_bounds = plane_sprite.getLocalBounds().getCenter();
+    
+    plane_sprite.setOrigin({plane_size_bounds.x, plane_size_bounds.y});
+    plane_sprite.setPosition({125.f,375.f});
     
     
-    Plane p1(0,1,0); //speed, alt, heading
+    Plane p1(0,1,0); //construct plane speed, alt, heading
+
     while (window.isOpen())
     {
         
@@ -216,11 +234,15 @@ void external_window() {
                     
                 }
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::A){//Heading
+                    //terrible code setup - heading calculation
                     double new_heading = p1.get_heading() + (p1.heading_controller('A'));
                     p1.set_heading(p1.heading_converter(new_heading));
-                    std::cout << "A was pressed Speed is: " << p1.get_heading() << "Degrees" << std::endl;
+                    std::cout << "A was pressed Speed is: " << p1.get_heading() << " Degrees" << std::endl;
                     std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
+                    //rotation of plane sprite 
+
+
                     
                 }
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::D){//Heading
@@ -231,8 +253,12 @@ void external_window() {
                     heading_text.setString(heading_final_output);
                     
                 }
+                else if(KeyPressed->scancode == sf::Keyboard::Scancode::Escape){//Heading
+                    window.close();
+                    
+                }
                 else{
-                    std::cout <<"Not valid input";
+                    std::cout <<"Not valid input" << std::endl;
                 }
                 
             }
@@ -243,12 +269,16 @@ void external_window() {
         window.draw(speed_text);
         window.draw(altitude_text);
         window.draw(heading_text);
+        window.draw(line);
+        window.draw(line_divider);
+        window.draw(plane_sprite);
         window.display();
+        
     }
 }
     
 }
-
+/* old code - console
 void input_handling_speed_heading_altitude(Plane &p1){
     for(char c; std::cin >> c;){
         switch (c)
@@ -331,14 +361,13 @@ void run_application(){
     run_plane();
     
 }
+*/
 
 
 int main(){
     
     try{
-        external_window();
-        // Create the main window
-    
+        run_plane();    
     }
     catch (std::exception& e){
         std::cerr <<  "Error: " << e.what() << '\n';
