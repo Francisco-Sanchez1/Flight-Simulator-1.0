@@ -237,6 +237,7 @@ void run_plane() {
                     //terrible code setup - heading calculation
                     double new_heading = p1.get_heading() + (p1.heading_controller('A'));
                     p1.set_heading(p1.heading_converter(new_heading));
+                    plane_sprite.setRotation(sf::degrees(p1.get_heading()));
                     std::cout << "A was pressed Speed is: " << p1.get_heading() << " Degrees" << std::endl;
                     std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
@@ -248,6 +249,7 @@ void run_plane() {
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::D){//Heading
                     double new_heading = p1.get_heading() + (p1.heading_controller('D'));
                     p1.set_heading(p1.heading_converter(new_heading));
+                    plane_sprite.setRotation(sf::degrees(p1.get_heading()));
                     std::cout << "D was pressed Speed is: " << p1.get_heading() << " Degrees" << std::endl;
                     std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
