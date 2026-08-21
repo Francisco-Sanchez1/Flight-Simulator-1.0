@@ -19,6 +19,10 @@ class Plane{
         double get_speed();
         double set_speed(double s);
         double speed_controller(char input);
+
+        void set_accelerate(bool value);
+        void update(float dt);
+
         
         double get_heading();
         double set_heading(double h);
@@ -36,10 +40,21 @@ class Plane{
         double speed;
         double heading;
         double altitude;
+        bool accelerating = false;
 };
 
 void error(std::string s){
     throw std::runtime_error{s};
+}
+
+void Plane::set_accelerate(bool value){
+    accelerating = value;
+
+}
+void Plane::update(float dt){
+    if(accelerating){
+        speed += 10 * dt;
+    }
 }
 //Altitude Methods
 
@@ -137,7 +152,7 @@ double Plane::speed_controller(char i){
 void run_plane() {
     {
     sf::RenderWindow window(sf::VideoMode({500, 500}), "Flight Simulator 1.0");
-    
+    sf::Clock clock;
     
     sf::Font font;
     if (!font.openFromFile("/System/Library/Fonts/Helvetica.ttc")){
@@ -181,10 +196,11 @@ void run_plane() {
 
     //Spawn in plane sprite
     sf::Texture plane_texture("/Users/fs/Desktop/Programs/Flight-Simulator-1.0/assests/plane.png");
-   
+    plane_texture.setSmooth(true);
     sf::Sprite plane_sprite(plane_texture);
+    
 
-    auto plane_size_bounds = plane_sprite.getLocalBounds().getCenter();
+    sf::Vector2<float> plane_size_bounds = plane_sprite.getLocalBounds().getCenter(); // 
     
     plane_sprite.setOrigin({plane_size_bounds.x, plane_size_bounds.y});
     plane_sprite.setPosition({125.f,375.f});
@@ -194,6 +210,7 @@ void run_plane() {
 
     while (window.isOpen())
     {
+        float dt = clock.restart().asSeconds();
         
         while (const std::optional event = window.pollEvent())
         {
@@ -202,17 +219,18 @@ void run_plane() {
             if(const auto* KeyPressed = event->getIf<sf::Event::KeyPressed>())
             {
                 if(KeyPressed->scancode == sf::Keyboard::Scancode::W){ //speed
+                    /*
                     double new_speed = p1.get_speed() + (p1.speed_controller('W'));
                     p1.set_speed(new_speed);
-                    std::cout << "W was pressed Speed is: " << p1.get_speed() << " Kt" << std::endl;
                     std::string speed_value = "Speed: " + std::to_string(p1.get_speed()) + " Kt"; 
                     speed_text.setString(speed_value);
-                    
+                    */
+                   p1.set_accelerate(true);
+                   speed_text.setString(std::to_string(static_cast<int>(p1.get_speed())));
                 }
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::S){//Speed
                     double new_speed = p1.get_speed() + (p1.speed_controller('S'));
                     p1.set_speed(new_speed);
-                    std::cout << "S was pressed Speed is: " << p1.get_speed() << " Kt" << std::endl;
                     std::string speed_final_output = "Speed: " + std::to_string(p1.get_speed()) + " Kt"; 
                     speed_text.setString(speed_final_output);
                     
@@ -220,7 +238,6 @@ void run_plane() {
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::Q){//Altitude
                     double new_altitude = p1.get_altitude() + (p1.altitude_controller('Q'));
                     p1.set_altitude(new_altitude);
-                    std::cout << "Q was pressed Speed is: " << p1.get_altitude() << " Ft" << std::endl;
                     std::string altitude_final_output = "Altitude: " + std::to_string(p1.get_altitude()) + " Ft"; 
                     altitude_text.setString(altitude_final_output);
                     
@@ -228,7 +245,6 @@ void run_plane() {
                 else if(KeyPressed->scancode == sf::Keyboard::Scancode::E){//Altitude
                     double new_altitude = p1.get_altitude() + (p1.altitude_controller('E'));
                     p1.set_altitude(new_altitude);
-                    std::cout << "E was pressed Speed is: " << p1.get_altitude() << " Ft" << std::endl;
                     std::string altitude_final_output = "Altitude: " + std::to_string(p1.get_altitude()) + " Ft"; 
                     altitude_text.setString(altitude_final_output);
                     
@@ -238,7 +254,6 @@ void run_plane() {
                     double new_heading = p1.get_heading() + (p1.heading_controller('A'));
                     p1.set_heading(p1.heading_converter(new_heading));
                     plane_sprite.setRotation(sf::degrees(p1.get_heading()));
-                    std::cout << "A was pressed Speed is: " << p1.get_heading() << " Degrees" << std::endl;
                     std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
                     //rotation of plane sprite 
@@ -250,7 +265,6 @@ void run_plane() {
                     double new_heading = p1.get_heading() + (p1.heading_controller('D'));
                     p1.set_heading(p1.heading_converter(new_heading));
                     plane_sprite.setRotation(sf::degrees(p1.get_heading()));
-                    std::cout << "D was pressed Speed is: " << p1.get_heading() << " Degrees" << std::endl;
                     std::string heading_final_output = "Heading: " + std::to_string(p1.get_heading()) + " Degrees"; 
                     heading_text.setString(heading_final_output);
                     
@@ -261,11 +275,13 @@ void run_plane() {
                 }
                 else{
                     std::cout <<"Not valid input" << std::endl;
+                    p1.set_accelerate(false);
                 }
                 
             }
             
         }
+        p1.update(dt);
 
         window.clear();
         window.draw(speed_text);
